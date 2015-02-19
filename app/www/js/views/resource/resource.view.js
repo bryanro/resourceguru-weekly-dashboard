@@ -20,8 +20,6 @@ define([
             this.bookings = options.bookingsCollection;
             this.bookings.fetch({
                 success: function (model, result, options) {
-                    $('.btn.view-type').removeClass('btn-primary');
-                    $('#view-type-resource').addClass('btn-primary');
                     that.generateByResource();
                     that.render();
                 },
