@@ -2,6 +2,7 @@ var logger = require('winston');
 var moment = require('moment');
 var _ = require('underscore');
 var profilepics = require ('../configs/profilepics');
+var nonbillable = require ('../configs/nonbillable');
 
 var Util = {};
 
@@ -53,15 +54,30 @@ Util.mergeBookingsData = function (bookings, clients, projects, resources, callb
         booking.project = _.findWhere(projects, { id: booking.project_id });
         booking.resource = _.findWhere(resources, { id: booking.resource_id });
     });
-    bookings = Util.applyProfilePics(bookings)
+    bookings = Util.applyMetadata(bookings);
     callback(null, bookings);
 }
 
-Util.applyProfilePics = function (bookings) {
+/**
+ * Apply additional metadata such as profile pics, billable flag, etc.
+ * @param bookings
+ * @returns {*}
+ */
+Util.applyMetadata = function (bookings) {
     _.each(bookings, function (booking) {
+        // profile pic
         var foundProfilePic = _.findWhere(profilepics, { name: booking.resource.name });
         if (foundProfilePic) {
             booking.resource.profile_pic = foundProfilePic.imageUrl;
+        }
+
+        // billable flag
+        var foundNonBillable = _.findWhere(nonbillable, { client: booking.client.name, project: booking.project.name });
+        if (foundNonBillable) {
+            booking.project.billable = false;
+        }
+        else {
+            booking.project.billable = true;
         }
     });
     return bookings;

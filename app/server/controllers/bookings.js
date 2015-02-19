@@ -66,7 +66,7 @@ BookingsController.fetchWeeklyBookings = function (callback) {
 
             var url = config.resourceguru.baseUriWithDomain + '/bookings';
             if (startDate && endDate) {
-                url += '?start_date=' + startDate + '&end_date=' + endDate ;
+                url += '?start_date=' + startDate + '&end_date=' + endDate;
             }
 
             logger.debug('fetchWeeklyBookings url: ' + url);
@@ -181,12 +181,13 @@ BookingsController.getWeeklyBookingsByResource = function (callback) {
                         name: booking.project.name,
                         client: booking.client.name
                     });
-                    if (!foundProject)
+                    if (!foundProject) {
                         foundResourceBooking.projects.push({
                             name: booking.project.name,
                             client: booking.client.name,
                             color: util.hexToRgba(booking.project.color, 0.2)
                         });
+                    }
                 }
                 else {
                     var resourceBooking = {
@@ -227,10 +228,10 @@ BookingsController.getWeeklyBookingsByClient = function (callback) {
              */
 
             _.each(bookings, function (booking) {
-                var foundClient = _.findWhere(clientBookings, { client: booking.client.name });
+                var foundClient = _.findWhere(clientBookings, {client: booking.client.name});
                 if (foundClient) {
                     // don't add dupe
-                    var foundProject = _.findWhere(foundClient.projects, { name: booking.project.name });
+                    var foundProject = _.findWhere(foundClient.projects, {name: booking.project.name});
                     if (foundProject) {
                         if (!_.contains(foundProject.resources, booking.resource.name)) {
                             foundProject.resources.push(booking.resource.name);
