@@ -2,18 +2,16 @@
     'jquery',
     'underscore',
     'backbone',
-    'collections/bookings.collection',
     'views/resource/resource.view',
     'views/client/client.view'
     /* list of all other views used */
-], function ($, _, Backbone, BookingsCollection, ResourceView, ClientView) {
+], function ($, _, Backbone, ResourceView, ClientView) {
 
     var thisRouter;
 
     var Router = Backbone.Router.extend({
 
         initialize: function () {
-            this.bookingsCollection = new BookingsCollection();
         },
 
         routes: {
@@ -28,13 +26,11 @@
         },
 
         showResource: function () {
-            this.resourceView = new ResourceView({ bookingsCollection: this.bookingsCollection });
-            this.resourceView.render();
+            this.resourceView = new ResourceView({  });
         },
 
         showClient: function () {
-            this.clientView = new ClientView({ bookingsCollection: this.bookingsCollection });
-            this.clientView.render();
+            this.clientView = new ClientView({  });
         }
     });
 
