@@ -1,0 +1,21 @@
+<div class="row">
+    <% var i = 0 %>
+    <% _.each(resourceBookings, function (booking) { %>
+    <div class="col-lg-4">
+        <div class="outer-box">
+            <% if (booking.image) { %>
+                <img class="profile-pic" src="<%=booking.image%>">
+            <% } %>
+            <span class="outer-box-title"><%= booking.resource %></span>
+            <% _.each(_.sortBy(booking.projects, function (p) { return p.name; }), function (project) { %>
+                <div class="inner-box" style="background-color: <%=project.color%>;">
+                    <%=project.name%> (<%=project.client%>)
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    <% if (++i % 3 == 0) { %>
+        <div class="clearfix visible-lg"></div>
+    <% } %>
+    <% }); %>
+</div>

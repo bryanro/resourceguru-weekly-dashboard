@@ -1,0 +1,47 @@
+﻿{
+	"name": "boilerplate",
+	"version": "0.2.0",
+	"description": "NodeJS boilerplate for RESTful web services with optional front-end",
+	"author": {
+		"name": "Your Name Here",
+		"email": "yourname@yoursite.com"
+	},
+	"website":{
+		"url": "http://yourwebsite.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "http://yourrepository.com/projectname"
+	},
+	"private": false,
+	"dependencies": {
+		"express":			"latest",
+		"body-parser":  	"latest",
+		"method-override":  "latest",
+		"errorhandler": 	"latest",
+		"cookie-session":   "latest",
+	  	"cookie-parser":    "latest",
+	  	"jade":         	"latest",
+
+	  	"forever":      	"latest",
+		"moment":			"latest",
+		"underscore":		"latest",
+		"async":        	"latest",
+
+		"morgan":       	"latest",
+
+		"winston":      	"latest",
+
+		"cron":         	"latest",
+		"time":         	"latest",
+
+	  	"restler":			"latest",
+	  	"oauth":			"latest",
+
+	  	"nedb":         	"latest"
+	},
+	"engines": {
+		"node":			"latest",
+		"npm":			"latest"
+	}
+}
