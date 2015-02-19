@@ -4,7 +4,7 @@ define([
 ], function (Backbone, BookingModel) {
     var BookingCollection = Backbone.Collection.extend({
         model: BookingModel,
-        url: '/bookings/extract',
+        url: '/bookings/week',
         initialize: function () {
         }
     });

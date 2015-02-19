@@ -15,9 +15,9 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.get('/extract', function (req, res, next) {
+router.get('/week', function (req, res, next) {
 
-    BookingsController.getBookingsExtract(function (err, bookings) {
+    BookingsController.getBookingsThisWeek(function (err, bookings) {
         if (err) {
             res.status(500).send({ errorMessage: err });
         }

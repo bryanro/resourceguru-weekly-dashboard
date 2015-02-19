@@ -64,7 +64,7 @@ BookingsController.getBookings = function (callback) {
     }
 }
 
-BookingsController.getBookingsExtract = function (callback) {
+BookingsController.getBookingsThisWeek = function (callback) {
     BookingsController.getBookings(function (err, bookings) {
         if (err) {
 
