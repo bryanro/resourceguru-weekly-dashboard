@@ -43,11 +43,13 @@ define([
         },
 
         decrementTime: function () {
-            console.log('prev');
+            $('#select-time-value option:selected').prev().attr('selected', 'selected');
+            this.timeValueChange();
         },
 
         incrementTime: function () {
-            console.log('next');
+            $('#select-time-value option:selected').next().attr('selected', 'selected');
+            this.timeValueChange();
         },
 
         timeCategoryChange: function (e) {
