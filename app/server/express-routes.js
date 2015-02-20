@@ -4,6 +4,7 @@ var clients = require('./routes/clients');
 var projects = require('./routes/projects');
 var resources = require('./routes/resources');
 var chargeability = require('./routes/chargeability');
+var refresh = require('./routes/refresh');
 
 module.exports = function (app) {
     app.use('/test', test);
@@ -12,6 +13,7 @@ module.exports = function (app) {
     app.use('/projects', projects);
     app.use('/resources', resources);
     app.use('/chargeability', chargeability);
+    app.use('/refresh', refresh);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
