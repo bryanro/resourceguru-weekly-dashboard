@@ -40,7 +40,7 @@ Util.getMondayOfNextWeek = function () {
 }
 
 Util.isDataStale = function (lastUpdate) {
-    if (Util.getMondayOfNextWeek() <= lastUpdate) {
+    if (moment(Util.getMondayOfThisWeek()).isAfter(lastUpdate)) {
         return true;
     }
     else {
@@ -66,18 +66,31 @@ Util.mergeBookingsData = function (bookings, clients, projects, resources, callb
 Util.applyMetadata = function (bookings) {
     _.each(bookings, function (booking) {
         // profile pic
-        var foundProfilePic = _.findWhere(profilepics, { name: booking.resource.name });
-        if (foundProfilePic) {
-            booking.resource.profile_pic = foundProfilePic.imageUrl;
+        if (booking.resource) {
+            var foundProfilePic = _.findWhere(profilepics, {name: booking.resource.name});
+            if (foundProfilePic) {
+                booking.resource.profile_pic = foundProfilePic.imageUrl;
+            }
+        }
+        else {
+            logger.error('booking.resource is not defined');
         }
 
         // billable flag
-        var foundNonBillable = _.findWhere(nonbillable, { client: booking.client.name, project: booking.project.name });
-        if (foundNonBillable) {
-            booking.project.billable = false;
+        if (booking.client && booking.project) {
+            var foundNonBillable = _.findWhere(nonbillable, {
+                client: booking.client.name,
+                project: booking.project.name
+            });
+            if (foundNonBillable) {
+                booking.project.billable = false;
+            }
+            else {
+                booking.project.billable = true;
+            }
         }
         else {
-            booking.project.billable = true;
+            logger.error('booking.client and booking.project are not defined');
         }
     });
     return bookings;
