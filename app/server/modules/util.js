@@ -94,4 +94,20 @@ Util.hexToRgba = function (hex, opacity) {
     return "rgba(" + parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16) + "," + opacity + ")";
 }
 
+Util.numWorkingDays = function (startDate, endDate) {
+    var start = moment(startDate);
+    var end = moment(endDate);
+    var count = 0;
+
+    while(!start.isAfter(end)) {
+        if (start.day() > 0 && start.day() < 6)
+        {
+            count++;
+        }
+        start.add(1, 'days');
+    }
+
+    return count;
+}
+
 module.exports = Util;

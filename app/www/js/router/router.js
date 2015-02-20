@@ -3,9 +3,10 @@
     'underscore',
     'backbone',
     'views/resource/resource.view',
-    'views/client/client.view'
+    'views/client/client.view',
+    'views/chargeability/chargeability.view'
     /* list of all other views used */
-], function ($, _, Backbone, ResourceView, ClientView) {
+], function ($, _, Backbone, ResourceView, ClientView, ChargeabilityView) {
 
     var thisRouter;
 
@@ -17,6 +18,7 @@
         routes: {
             'resource': 'showResource',
             'client': 'showClient',
+            'chargeability': 'showChargeability',
             // Default
             '*actions': 'showDefault'
         },
@@ -31,6 +33,10 @@
 
         showClient: function () {
             this.clientView = new ClientView({  });
+        },
+
+        showChargeability: function () {
+            this.chargeabilityView = new ChargeabilityView({  });
         }
     });
 

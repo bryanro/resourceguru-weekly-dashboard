@@ -36,7 +36,7 @@ BookingsController.fetchBookings = function (callback) {
                     logger.debug('fetchBookings: ' + result.length + ' records');
                     BookingsController.bookingsModel = result;
                     BookingsController.bookingsModel.lastUpdate = new Date();
-                    callback(null, result);
+                    callback(null, BookingsController.bookingsModel);
                 })
                 .on('fail', function (result, response) {
                     util.handleWebRequestError(result, response, callback);

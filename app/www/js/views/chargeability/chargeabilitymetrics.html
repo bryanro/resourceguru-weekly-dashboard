@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="outer-box center-text">
+            <div class="stat-value"><%=Util.numberWithCommas(aggregatedChargeability.hoursPossible)%></div>
+            <div class="stat-text">Hours Possible</div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="outer-box center-text">
+            <div class="stat-value"><%=aggregatedChargeability.utilizationPct%>%</div>
+            <div class="stat-text">Utilization</div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="outer-box center-text">
+            <div class="stat-value"><%=aggregatedChargeability.chargeabilityPct%>%</div>
+            <div class="stat-text">Chargeability</div>
+        </div>
+    </div>
+</div>

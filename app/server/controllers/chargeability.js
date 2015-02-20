@@ -14,11 +14,12 @@ ChargeabilityController.getChargeabilityForPeriod = function (startDate, endDate
     BookingsController.getPopulatedBookingsHistorical(function (err, bookings) {
 
         var filteredBookings = ChargeabilityController.filterByTime(bookings, startDate, endDate);
-
-        var resourceChargeability = ChargeabilityController.calculateResourceChargeability(filteredBookings);
+        var resourceChargeability = ChargeabilityController.calculateResourceChargeability(filteredBookings, endDate);
         var aggregatedChargeability = ChargeabilityController.calculateAggregatedChargeability(resourceChargeability);
 
-        callback({
+        callback(null, {
+            startDate: startDate,
+            endDate: endDate,
             filteredBookings: filteredBookings,
             resourceChargeability: resourceChargeability,
             aggregatedChargeability: aggregatedChargeability
@@ -30,20 +31,33 @@ ChargeabilityController.filterByTime = function (bookings, startDate, endDate) {
     var filteredBookings = [];
 
     _.each(bookings, function (booking) {
+
         // durations: [{ date: '2015-01-01', date: 480, ...}]
         var filteredDurations = _.filter(booking.durations, function (duration) {
             var durationMoment = moment(duration.date);
+
             // if the duration's date is within the start and end date (inclusive) add it to the array
-            if (durationMoment.isSame(startDate) || durationMoment.isSame(endDate)
+            if (!startDate || !endDate || durationMoment.isSame(startDate) || durationMoment.isSame(endDate)
                     || (durationMoment.isAfter(startDate) && durationMoment.isBefore(endDate))) {
                 return true;
             }
+            else {
+                return false;
+            }
         });
+
         // if there was at least one duration in the time period, add it back
         if (filteredDurations && filteredDurations.length > 0) {
-            booking.durations = filteredDurations;
-            booking.utilization = ChargeabilityController.calculateBookingUtilization(filteredDurations);
-            filteredBookings.push(booking);
+            filteredBookings.push({
+                client: _.clone(booking.client),
+                project: _.clone(booking.project),
+                resource: _.clone(booking.resource),
+                durations: filteredDurations,
+                utilization: ChargeabilityController.calculateBookingUtilization(filteredDurations)
+            });
+            //booking.durations = filteredDurations;
+            //booking.utilization = ChargeabilityController.calculateBookingUtilization(filteredDurations);
+            //filteredBookings.push(booking);
         }
     });
 
@@ -54,16 +68,12 @@ ChargeabilityController.calculateBookingUtilization = function (durations) {
     var hoursBooked = _.reduce(durations, function (memo, duration) {
         return memo + (duration.duration / 60); // duration is in min, so divide by 60 to get hours
     }, 0);
-    var hoursPossible = durations.length * 8; // number of days * 8
-    var utilizationPct = (hoursBooked / hoursPossible * 100).toFixed(0);
     return {
-        hoursBooked: hoursBooked,
-        hoursPossible: hoursPossible,
-        utilizationPct: utilizationPct
+        hoursBooked: hoursBooked
     };
 }
 
-ChargeabilityController.calculateResourceChargeability = function (bookings) {
+ChargeabilityController.calculateResourceChargeability = function (bookings, endDate) {
     var resourceBookings = [];
     /*
      {
@@ -93,11 +103,19 @@ ChargeabilityController.calculateResourceChargeability = function (bookings) {
             // update chargeability
             foundResourceBooking.chargeability.hoursBooked += booking.utilization.hoursBooked;
             foundResourceBooking.chargeability.hoursCharged += (booking.project.billable ? booking.utilization.hoursBooked : 0);
-            foundResourceBooking.chargeability.hoursPossible += booking.utilization.hoursPossible;
-            foundResourceBooking.chargeability.utilizationPct = ((foundResourceBooking.chargeability.hoursBooked / foundResourceBooking.chargeability.hoursPossible) * 100).toFixed(0);
-            foundResourceBooking.chargeability.utilizationPct = ((foundResourceBooking.chargeability.hoursCharged / foundResourceBooking.chargeability.hoursPossible) * 100).toFixed(0);
+
+            var firstDurationDate = _.min(booking.durations, function (duration) {
+                return moment(duration.date);
+            }).date;
+            if (firstDurationDate < foundResourceBooking.firstDurationDate) {
+                foundResourceBooking.firstDurationDate = firstDurationDate;
+            }
         }
         else {
+            var firstDurationDate = _.min(booking.durations, function (duration) {
+                return moment(duration.date).format('X');
+            }).date;
+
             var resourceBooking = {
                 resource: booking.resource.name,
                 image: booking.resource.profile_pic,
@@ -105,20 +123,32 @@ ChargeabilityController.calculateResourceChargeability = function (bookings) {
                     name: booking.project.name,
                     client: booking.client.name,
                     color: util.hexToRgba(booking.project.color, 0.2)
-                }]
+                }],
+                chargeability: {
+                    hoursBooked: booking.utilization.hoursBooked,
+                    hoursCharged: (booking.project.billable ? booking.utilization.hoursBooked : 0)
+                },
+                firstDurationDate: firstDurationDate
             };
 
-            resourceBooking.chargeability = {
+            /*resourceBooking.chargeability = {
                 hoursBooked: booking.utilization.hoursBooked,
-                hoursCharged: (booking.project.billable ? booking.utilization.hoursBooked : 0),
-                hoursPossible: booking.utilization.hoursPossible,
-                utilizationPct: ((booking.utilization.hoursBooked / booking.utilization.hoursPossible) * 100).toFixed(0),
-                chargeabilityPct: (((booking.project.billable ? booking.utilization.hoursBooked : 0) / booking.utilization.hoursPossible) * 100).toFixed(0)
-            }
+                hoursCharged: (booking.project.billable ? booking.utilization.hoursBooked : 0)
+                //hoursPossible: booking.utilization.hoursPossible,
+                //utilizationPct: ((booking.utilization.hoursBooked / booking.utilization.hoursPossible) * 100).toFixed(0),
+                //chargeabilityPct: (((booking.project.billable ? booking.utilization.hoursBooked : 0) / booking.utilization.hoursPossible) * 100).toFixed(0)
+            }*/
 
             resourceBookings.push(resourceBooking);
         }
     });
+
+    _.each(resourceBookings, function (resourceBooking) {
+        resourceBooking.chargeability.hoursPossible = util.numWorkingDays(resourceBooking.firstDurationDate, endDate) * 8;
+        resourceBooking.chargeability.utilizationPct = ((resourceBooking.chargeability.hoursBooked / resourceBooking.chargeability.hoursPossible) * 100).toFixed(0);
+        resourceBooking.chargeability.chargeabilityPct = ((resourceBooking.chargeability.hoursCharged / resourceBooking.chargeability.hoursPossible) * 100).toFixed(0);
+    });
+
     resourceBookings = _.sortBy(resourceBookings, function (booking) {
         return booking.resource;
     });

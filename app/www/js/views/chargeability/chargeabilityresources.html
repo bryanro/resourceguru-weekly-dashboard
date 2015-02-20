@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Hours Possible</td>
+                <td>Booked Hours</td>
+                <td>Chargeable Hours</td>
+                <td>Utilization %</td>
+                <td>Chargeability %</td>
+            </tr>
+            </thead>
+            <% _.each(resourceChargeability, function (resource) { %>
+            <tr>
+                <td><%=resource.resource%></td>
+                <td><%=resource.chargeability.hoursPossible%></td>
+                <td><%=resource.chargeability.hoursBooked%></td>
+                <td><%=resource.chargeability.hoursCharged%></td>
+                <td><%=resource.chargeability.utilizationPct%>%</td>
+                <td><%=resource.chargeability.chargeabilityPct%>%</td>
+            </tr>
+            <% }); %>
+        </table>
+    </div>
+</div>
