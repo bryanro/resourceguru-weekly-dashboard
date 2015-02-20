@@ -55,9 +55,6 @@ ChargeabilityController.filterByTime = function (bookings, startDate, endDate) {
                 durations: filteredDurations,
                 utilization: ChargeabilityController.calculateBookingUtilization(filteredDurations)
             });
-            //booking.durations = filteredDurations;
-            //booking.utilization = ChargeabilityController.calculateBookingUtilization(filteredDurations);
-            //filteredBookings.push(booking);
         }
     });
 
@@ -130,14 +127,6 @@ ChargeabilityController.calculateResourceChargeability = function (bookings, end
                 },
                 firstDurationDate: firstDurationDate
             };
-
-            /*resourceBooking.chargeability = {
-                hoursBooked: booking.utilization.hoursBooked,
-                hoursCharged: (booking.project.billable ? booking.utilization.hoursBooked : 0)
-                //hoursPossible: booking.utilization.hoursPossible,
-                //utilizationPct: ((booking.utilization.hoursBooked / booking.utilization.hoursPossible) * 100).toFixed(0),
-                //chargeabilityPct: (((booking.project.billable ? booking.utilization.hoursBooked : 0) / booking.utilization.hoursPossible) * 100).toFixed(0)
-            }*/
 
             resourceBookings.push(resourceBooking);
         }
