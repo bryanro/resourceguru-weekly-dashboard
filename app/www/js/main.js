@@ -4,7 +4,7 @@
         backbone: 'lib/backbone/backbone-1.0.0',
         bootstrap: 'lib/bootstrap/bootstrap-3.0.0',
         less: 'lib/less/less-1.3.1.min',
-        moment: 'lib/moment/moment-1.7.2.min',
+        moment: 'lib/moment/moment-2.9.0.min',
         text: 'lib/require/text-2.0.7',
         underscore: 'lib/underscore/underscore-1.5.1',
         util: 'util/util'
