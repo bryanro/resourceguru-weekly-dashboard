@@ -21,8 +21,6 @@ define([
             this.bookings = new BookingsWeeklyResourceCollection();
             this.bookings.fetch({
                 success: function (model, result, options) {
-                    console.log('model');
-                    console.log(model);
                     that.render();
                 },
                 error: function (model, xhr, options) {
@@ -48,7 +46,6 @@ define([
                     return (project.client == 'BlueFletch Internal' && project.name == 'Business Development');
                 }));
                 if (booking.get('projects').length < 1) {
-                    console.log('removing booking for ' + booking.get('resource'));
                     that.bookings.remove(booking);
                 }
             });
