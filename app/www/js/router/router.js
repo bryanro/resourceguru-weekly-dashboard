@@ -24,7 +24,7 @@
         },
 
         showDefault: function () {
-            this.navigate('//resource', {trigger: true});
+            this.navigate('//client', {trigger: true});
         },
 
         showResource: function () {
