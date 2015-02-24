@@ -31,11 +31,22 @@ define([
         },
 
         render: function () {
+            this.filterBookings();
             this.byClientTemplate = _.template(ByClientTemplate);
             this.$el.html(this.byClientTemplate({ clientBookings: this.bookings }));
         },
 
         events: {
+        },
+
+        filterBookings: function () {
+            // remove BlueFletch Internal - Business Development
+            var BlueFletchInternal = _.find(this.bookings.models, function (booking) {
+                return booking.get('client') == 'BlueFletch Internal';
+            });
+            BlueFletchInternal.set('projects', _.reject(BlueFletchInternal.get('projects'), function (project) {
+                return project.name == 'Business Development';
+            }));
         }
     });
 

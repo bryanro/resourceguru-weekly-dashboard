@@ -21,6 +21,8 @@ define([
             this.bookings = new BookingsWeeklyResourceCollection();
             this.bookings.fetch({
                 success: function (model, result, options) {
+                    console.log('model');
+                    console.log(model);
                     that.render();
                 },
                 error: function (model, xhr, options) {
@@ -30,11 +32,26 @@ define([
         },
 
         render: function () {
+            this.filterBookings();
             this.byResourceTemplate = _.template(ByResourceTemplate);
             this.$el.html(this.byResourceTemplate({ resourceBookings: this.bookings }));
         },
 
         events: {
+        },
+
+        filterBookings: function () {
+            var that = this;
+
+            _.each(this.bookings.models, function (booking) {
+                booking.set('projects', _.reject(booking.get('projects'), function (project) {
+                    return (project.client == 'BlueFletch Internal' && project.name == 'Business Development');
+                }));
+                if (booking.get('projects').length < 1) {
+                    console.log('removing booking for ' + booking.get('resource'));
+                    that.bookings.remove(booking);
+                }
+            });
         }
     });
 
