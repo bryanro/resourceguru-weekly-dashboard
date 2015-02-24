@@ -12,7 +12,7 @@
     <div class="col-lg-4">
         <div class="outer-box">
             <% if (booking.get('image')) { %>
-                <img class="profile-pic" src="<%=booking.image%>">
+                <img class="profile-pic" src="<%=booking.get('image')%>">
             <% } %>
             <span class="outer-box-title"><%= booking.get('resource') %></span>
             <% _.each(_.sortBy(booking.get('projects'), function (p) { return p.name; }), function (project) { %>
