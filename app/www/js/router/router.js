@@ -28,15 +28,30 @@
         },
 
         showResource: function () {
-            this.resourceView = new ResourceView({  });
+            if (!this.resourceView) {
+                this.resourceView = new ResourceView({  });
+            }
+            else {
+                this.resourceView.render();
+            }
         },
 
         showClient: function () {
-            this.clientView = new ClientView({  });
+            if (!this.clientView) {
+                this.clientView = new ClientView({  });
+            }
+            else {
+                this.clientView.render();
+            }
         },
 
         showChargeability: function () {
-            this.chargeabilityView = new ChargeabilityView({  });
+            if (!this.chargeabilityView) {
+                this.chargeabilityView = new ChargeabilityView({  });
+            }
+            else {
+                this.chargeabilityView.render();
+            }
         }
     });
 
