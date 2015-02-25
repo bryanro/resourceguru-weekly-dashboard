@@ -33,6 +33,8 @@ define([
             this.filterBookings();
             this.byResourceTemplate = _.template(ByResourceTemplate);
             this.$el.html(this.byResourceTemplate({ resourceBookings: this.bookings }));
+
+            Util.refreshPageAtTime();
         },
 
         events: {

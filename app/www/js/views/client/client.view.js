@@ -34,6 +34,8 @@ define([
             this.filterBookings();
             this.byClientTemplate = _.template(ByClientTemplate);
             this.$el.html(this.byClientTemplate({ clientBookings: this.bookings }));
+
+            Util.refreshPageAtTime();
         },
 
         events: {

@@ -7,6 +7,8 @@
     var Util = {
 
         START_YEAR: 2015, // first year started using ResourceGuru
+        REFRESH_HOUR: 6,
+        refreshTimeoutSet: false,
 
         hexToRgba: function (hex, opacity) {
             // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -90,6 +92,29 @@
 
         numberWithCommas: function (number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+
+        refreshPageAtTime: function () {
+            if (!this.refreshTimeoutSet) {
+                var now = moment();
+                var tomorrow = moment();
+                tomorrow.hour(this.REFRESH_HOUR);
+                tomorrow.minute(30);
+                tomorrow.second(0);
+                tomorrow.millisecond(0);
+                if (now.hour() >= this.REFRESH_HOUR) {
+                    tomorrow.add(1, 'days');
+                }
+
+                var timeDiff = tomorrow.format('x') - now.format('x');
+
+                setTimeout(function () {
+                    this.refreshTimeoutSet = false;
+                    window.location.reload(true);
+                }, timeDiff);
+
+                this.refreshTimeoutSet = true;
+            }
         }
     };
 
