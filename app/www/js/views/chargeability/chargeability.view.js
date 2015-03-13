@@ -43,12 +43,12 @@ define([
         },
 
         decrementTime: function () {
-            $('#select-time-value option:selected').prev().attr('selected', 'selected');
+            $('#select-time-value option:selected').next().attr('selected', 'selected');
             this.timeValueChange();
         },
 
         incrementTime: function () {
-            $('#select-time-value option:selected').next().attr('selected', 'selected');
+            $('#select-time-value option:selected').prev().attr('selected', 'selected');
             this.timeValueChange();
         },
 
