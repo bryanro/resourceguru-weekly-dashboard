@@ -90,7 +90,16 @@ Util.applyMetadata = function (bookings) {
             }
         }
         else {
-            logger.error('booking.client and booking.project are not defined');
+            if (booking.client) {
+                logger.error('booking.project is not defined for ' + booking.resource.name + ' on client ' + booking.client.name);
+            }
+            else if (booking.project) {
+                logger.error('booking.client is not defined for ' + booking.resource.name + ' on project ' + booking.project.name);
+            }
+            else {
+                // shouldn't happen
+                logger.error('booking.client and booking.project are not defined for ' + booking.resource.name);
+            }
         }
     });
     return bookings;
