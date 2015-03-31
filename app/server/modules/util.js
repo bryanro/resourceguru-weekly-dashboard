@@ -96,8 +96,18 @@ Util.applyMetadata = function (bookings) {
     return bookings;
 }
 
+/**
+ * Convert hex to rgba that can be plugged directly into the CSS style
+ * @param hex includes with and without #, and also supports shorthand form
+ * @param opacity between 0 and 1
+ * @returns string containing "rgba(#, #, #, #)"
+ */
 Util.hexToRgba = function (hex, opacity) {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    // if hex isn't set, default to 0
+    if (!hex) {
+        hex = "#FFFFFF";
+    }
+    // expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function(m, r, g, b) {
         return r + r + g + g + b + b;
@@ -107,6 +117,12 @@ Util.hexToRgba = function (hex, opacity) {
     return "rgba(" + parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16) + "," + opacity + ")";
 }
 
+/**
+ * Calculate the number of working days between startDate and endDate
+ * @param startDate
+ * @param endDate
+ * @returns number of working days
+ */
 Util.numWorkingDays = function (startDate, endDate) {
     var start = moment(startDate);
     var end = moment(endDate);
