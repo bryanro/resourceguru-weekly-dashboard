@@ -20,6 +20,9 @@ ResourcesController.fetchResources = function (callback) {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + authToken
+                },
+                query: {
+                    limit: 0 // get all records with no limit
                 }
             };
 
