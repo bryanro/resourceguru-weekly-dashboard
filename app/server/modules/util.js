@@ -92,6 +92,7 @@ Util.applyMetadata = function (bookings) {
         else {
             if (booking.client) {
                 // assume billable
+                booking.project = {};
                 booking.project.billable = true;
                 logger.error('booking.project is not defined for ' + booking.resource.name + ' on client ' + booking.client.name);
             }
@@ -103,6 +104,7 @@ Util.applyMetadata = function (bookings) {
             else {
                 // shouldn't happen
                 // assume non-billable
+                booking.project = {};
                 booking.project.billable = false;
                 logger.error('booking.client and booking.project are not defined for ' + booking.resource.name);
             }
