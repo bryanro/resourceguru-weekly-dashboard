@@ -4,6 +4,7 @@ var rest = require('restler');
 var util = require('../modules/util');
 var config = require('../../../config');
 var _ = require('underscore');
+var async = require('async');
 
 var ResourcesController = {};
 
@@ -26,23 +27,52 @@ ResourcesController.fetchResources = function (callback) {
                 }
             };
 
-            var url = config.resourceguru.baseUriWithDomain + '/resources';
+            async.series({
+                getProjects: function (asyncCallback) {
+                    var url = config.resourceguru.baseUriWithDomain + '/resources';
 
-            logger.debug('getResources url: ' + url);
+                    logger.debug('getResources url: ' + url);
 
-            rest.get(url, options)
-                .on('success', function (result, response) {
-                    logger.debug('getResources: ' + result.length + ' records');
-                    ResourcesController.resourcesModel = result;
-                    ResourcesController.resourcesModel.lastUpdate = new Date();
-                    callback(null, result);
-                })
-                .on('fail', function (result, response) {
-                    util.handleWebRequestError(result, response, callback);
-                })
-                .on('error', function (result, response) {
-                    util.handleWebRequestError(result, response, callback);
-                });
+                    rest.get(url, options)
+                        .on('success', function (result, response) {
+                            logger.debug('getResources: ' + result.length + ' records');
+                            ResourcesController.resourcesModel = result;
+                            ResourcesController.resourcesModel.lastUpdate = new Date();
+                            asyncCallback(null, result);
+                        })
+                        .on('fail', function (result, response) {
+                            util.handleWebRequestError(result, response, asyncCallback);
+                        })
+                        .on('error', function (result, response) {
+                            util.handleWebRequestError(result, response, asyncCallback);
+                        });
+                },
+                getProjectsArchived: function (asyncCallback) {
+                    var url = config.resourceguru.baseUriWithDomain + '/resources/archived';
+
+                    logger.debug('getResourcesArchived url: ' + url);
+
+                    rest.get(url, options)
+                        .on('success', function (result, response) {
+                            logger.debug('getResourcesArchived: ' + result.length + ' records');
+                            ResourcesController.resourcesModel = _.union(ResourcesController.resourcesModel, result);
+                            asyncCallback(null, result);
+                        })
+                        .on('fail', function (result, response) {
+                            util.handleWebRequestError(result, response, asyncCallback);
+                        })
+                        .on('error', function (result, response) {
+                            util.handleWebRequestError(result, response, asyncCallback);
+                        });
+                }
+            }, function (asyncError, results) {
+                if (asyncError) {
+                    callback(asyncError);
+                }
+                else {
+                    callback(null, ResourcesController.resourcesModel);
+                }
+            });
         }
     });
 }

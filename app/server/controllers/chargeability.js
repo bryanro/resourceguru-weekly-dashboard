@@ -83,6 +83,9 @@ ChargeabilityController.calculateResourceChargeability = function (bookings, end
 
     _.each(bookings, function (booking) {
         // search by resource name
+        if (!booking.resource) {
+            logger.error('resource not defined for booking: ' + JSON.stringify(booking));
+        }
         var foundResourceBooking = _.findWhere(resourceBookings, {resource: booking.resource.name});
         if (foundResourceBooking) {
             var foundProject = _.findWhere(foundResourceBooking.projects, {
