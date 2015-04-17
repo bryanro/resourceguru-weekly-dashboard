@@ -71,8 +71,8 @@
 
             var weeks = [];
 
-            var firstDayOfWeek = moment([this.START_YEAR, 0, 1]).startOf('week');
-            var endOfThisWeek = (new moment()).endOf('week');
+            var firstDayOfWeek = moment([this.START_YEAR, 0, 1]).startOf('week').add(1, 'days');
+            var endOfThisWeek = (new moment()).endOf('week').add(1, 'days');
 
             while (!firstDayOfWeek.isAfter(endOfThisWeek)) {
 
