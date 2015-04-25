@@ -10,7 +10,12 @@ router.get('/', function (req, res, next) {
 
     ChargeabilityController.getChargeabilityForPeriod(startDate, endDate, function (err, chargeability) {
         if (err) {
-            res.status(500).send({ errorMessage: err });
+            if (err == 'Unauthorized') {
+                res.status(401).send('Unauthorized');
+            }
+            else {
+                res.status(500).send({ errorMessage: err });
+            }
         }
         else {
             res.status(200).send(chargeability);
