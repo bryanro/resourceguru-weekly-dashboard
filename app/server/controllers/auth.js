@@ -45,10 +45,12 @@ AuthController.authenticate = function (callback) {
             callback(null);
         })
         .on('fail', function (result, response) {
-            // TODO: handle
+            logger.error('ResourceGuru auth failed: ' + result);
+            callback(result);
         })
         .on('error', function (result, response) {
-            // TODO: handle
+            logger.error('ResourceGuru auth failed: ' + result);
+            callback(result);
         });
 }
 
