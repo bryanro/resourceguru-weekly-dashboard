@@ -10,7 +10,7 @@ var app = express();
 
 app.config = config;
 
-logger.level =config.loggingVerbosity;
+logger.level = config.loggingVerbosity;
 
 app.set('port', process.env.PORT || 3000);
 
