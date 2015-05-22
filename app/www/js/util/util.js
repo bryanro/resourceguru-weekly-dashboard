@@ -29,10 +29,13 @@
 
             while (!firstDayOfYear.isAfter(today)) {
 
+                var lastDayOfYear = firstDayOfYear.clone().endOf('year');
+
                 years.push({
                     year: firstDayOfYear.format('YYYY'),
                     firstDateOfYear: firstDayOfYear.format('YYYY-MM-DD'),
-                    lastDateOfYear: firstDayOfYear.clone().endOf('year').format('YYYY-MM-DD')
+                    lastDateOfYear: lastDayOfYear.format('YYYY-MM-DD'),
+                    thisYear: moment().isBetween(firstDayOfYear, lastDayOfYear)
                 });
 
                 firstDayOfYear.add(1, 'years');
@@ -41,21 +44,29 @@
             return years;
         },
 
-        getMonthsThroughNow: function () {
+        getMonthsThroughNow: function (numMonthsAhead) {
 
             var months = [];
 
             var firstDayOfMonth = moment([this.START_YEAR, 0, 1]);
-            var today = new moment();
 
-            while (!firstDayOfMonth.isAfter(today)) {
+            var endDate = new moment(); // today
+            if (numMonthsAhead) {
+                endDate.add(numMonthsAhead, 'months');
+            }
+
+            while (!firstDayOfMonth.isAfter(endDate)) {
+
+                var lastDayOfMonth = firstDayOfMonth.clone().endOf('month');
 
                 months.push({
                     monthName: firstDayOfMonth.format('MMMM'),
                     monthAbbr: firstDayOfMonth.format('MMM'),
                     year: firstDayOfMonth.format('YYYY'),
                     firstDateOfMonth: firstDayOfMonth.format('YYYY-MM-DD'),
-                    lastDateOfMonth: firstDayOfMonth.clone().endOf('month').format('YYYY-MM-DD')
+                    lastDateOfMonth: lastDayOfMonth.format('YYYY-MM-DD'),
+                    thisMonth: moment().isBetween(firstDayOfMonth, lastDayOfMonth)
+
                 });
 
                 firstDayOfMonth.add(1, 'months');
@@ -67,18 +78,24 @@
             return months;
         },
 
-        getWeeksThroughNow: function () {
+        getWeeksThroughNow: function (numWeeksAhead) {
 
             var weeks = [];
 
             var firstDayOfWeek = moment([this.START_YEAR, 0, 1]).startOf('week').add(1, 'days');
             var endOfThisWeek = (new moment()).endOf('week').add(1, 'days');
+            if (numWeeksAhead) {
+                endOfThisWeek.add(numWeeksAhead, 'weeks');
+            }
 
             while (!firstDayOfWeek.isAfter(endOfThisWeek)) {
 
+                var lastDayOfWeek = firstDayOfWeek.clone().endOf('week');
+
                 weeks.push({
                     firstDateOfWeek: firstDayOfWeek.format('YYYY-MM-DD'),
-                    lastDateOfWeek: firstDayOfWeek.clone().endOf('week').format('YYYY-MM-DD')
+                    lastDateOfWeek: lastDayOfWeek.format('YYYY-MM-DD'),
+                    thisWeek: moment().isBetween(firstDayOfWeek, lastDayOfWeek)
                 });
 
                 firstDayOfWeek.add(1, 'weeks');

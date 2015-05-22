@@ -17,8 +17,8 @@ define([
 
             var that = this;
 
-            this.weeks = Util.getWeeksThroughNow();
-            this.months = Util.getMonthsThroughNow();
+            this.weeks = Util.getWeeksThroughNow(2);
+            this.months = Util.getMonthsThroughNow(1);
             this.years = Util.getYearsThroughNow();
 
             that.render();
@@ -79,7 +79,11 @@ define([
             var $selectTimeValue = $('#select-time-value');
             $selectTimeValue.html('');
             _.each(this.weeks, function (week) {
-                $selectTimeValue.append('<option value="' + week.firstDateOfWeek + '">' + week.firstDateOfWeek + '</option>')
+                var selected = '';
+                if (week.thisWeek) {
+                    selected = ' selected ';
+                }
+                $selectTimeValue.append('<option value="' + week.firstDateOfWeek + '"' + selected + '>' + week.firstDateOfWeek + '</option>')
             });
         },
 
@@ -87,7 +91,11 @@ define([
             var $selectTimeValue = $('#select-time-value');
             $selectTimeValue.html('');
             _.each(this.months, function (month) {
-                $selectTimeValue.append('<option value="' + month.firstDateOfMonth + '">' + month.monthAbbr + ' ' + month.year + '</option>')
+                var selected = '';
+                if (month.thisMonth) {
+                    selected = ' selected ';
+                }
+                $selectTimeValue.append('<option value="' + month.firstDateOfMonth + '"' + selected + '>' + month.monthAbbr + ' ' + month.year + '</option>')
             });
         },
 
@@ -95,7 +103,10 @@ define([
             var $selectTimeValue = $('#select-time-value');
             $selectTimeValue.html('');
             _.each(this.years, function (year) {
-                $selectTimeValue.append('<option value="' + year.firstDateOfYear + '">' + year.year + '</option>')
+                if (year.thisYear) {
+                    selected = ' selected ';
+                }
+                $selectTimeValue.append('<option value="' + year.firstDateOfYear + '"' + selected + '>' + year.year + '</option>')
             });
         },
 
