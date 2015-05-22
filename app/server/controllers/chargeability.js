@@ -10,13 +10,6 @@ var BookingsController = require('./bookings');
 var ChargeabilityController = {};
 
 ChargeabilityController.getChargeabilityForPeriod = function (startDate, endDate, callback) {
-
-    if (config.disallowChargeability) {
-        logger.warn('disallowChargeability flag is set to true, so do not allow access');
-        callback('Unauthorized');
-        return;
-    }
-
     BookingsController.getPopulatedBookingsHistorical(function (err, bookings) {
 
         var filteredBookings = ChargeabilityController.filterByTime(bookings, startDate, endDate);

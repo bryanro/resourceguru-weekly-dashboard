@@ -17,6 +17,8 @@ define([
 
             var that = this;
 
+            this.password = prompt('Enter password', '');
+
             this.weeks = Util.getWeeksThroughNow(2);
             this.months = Util.getMonthsThroughNow(1);
             this.years = Util.getYearsThroughNow();
@@ -141,10 +143,21 @@ define([
                     alert('error calculating start and end date');
             }
 
-            this.chargeability.fetch({ data: {
-                startDate: startDate,
-                endDate: endDate
-            } });
+            this.chargeability.fetch({
+                data: {
+                    password: this.password,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                error: function (model, xhr, options) {
+                    if (xhr && xhr.responseText) {
+                        alert(xhr.responseText);
+                    }
+                    else {
+                        alert('Error getting chargeability');
+                    }
+                }
+            });
         }
     });
 
