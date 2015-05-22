@@ -7,7 +7,8 @@
         moment: 'lib/moment/moment-2.9.0.min',
         text: 'lib/require/text-2.0.7',
         underscore: 'lib/underscore/underscore-1.5.1',
-        util: 'util/util'
+        util: 'util/util',
+        tablesorter: 'lib/tablesorter/tablesorter-2.21.5'
     },
     shim: {
         underscore: {

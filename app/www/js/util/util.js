@@ -132,6 +132,41 @@
 
                 this.refreshTimeoutSet = true;
             }
+        },
+
+        tablesorter: {
+            theme: {
+                // these classes are added to the table. To see other table classes available,
+                // look here: http://getbootstrap.com/css/#tables
+                table        : 'table table-bordered table-striped',
+                caption      : 'caption',
+                // header class names
+                header       : 'bootstrap-header', // give the header a gradient background (theme.bootstrap_2.css)
+                sortNone     : '',
+                sortAsc      : '',
+                sortDesc     : '',
+                active       : '',
+                hover        : '',
+                // icon class names
+                icons        : '',
+                iconSortNone : 'bootstrap-icon-unsorted',
+                iconSortAsc  : 'icon-chevron-up glyphicon glyphicon-chevron-up',
+                iconSortDesc : 'icon-chevron-down glyphicon glyphicon-chevron-down',
+                filterRow    : '',
+                footerRow    : '',
+                footerCells  : '',
+                even         : '',
+                odd          : ''
+            },
+            options: {
+                theme : "bootstrap",
+                widthFixed: true,
+                headerTemplate : '{content} {icon}',
+                widgets : [ "uitheme", "zebra" ],
+                widgetOptions : {
+                    zebra : ["even", "odd"]
+                }
+            }
         }
     };
 
