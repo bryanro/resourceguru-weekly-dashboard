@@ -37,7 +37,9 @@ ResourcesController.fetchResources = function (callback) {
                         .on('success', function (result, response) {
                             logger.debug('getResources: ' + result.length + ' records');
                             _.each(result, function (resource) {
-                                resource.active = true;
+                                if (resource.type !== 'Account Manager' && resource.type !== 'Sales') {
+                                    resource.active = true;
+                                }
                             });
                             ResourcesController.resourcesModel = result;
                             ResourcesController.resourcesModel.lastUpdate = new Date();
