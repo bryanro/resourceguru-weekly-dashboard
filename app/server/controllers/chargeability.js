@@ -139,7 +139,7 @@ ChargeabilityController.calculateResourceChargeability = function (bookings, sta
                     hoursBooked: booking.utilization.hoursBooked,
                     hoursCharged: (booking.project.billable ? booking.utilization.hoursBooked : 0)
                 },
-                firstDurationDate: firstDurationDate
+                firstDurationDate: startDate
             };
 
             resourceBookings.push(resourceBooking);
