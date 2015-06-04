@@ -6,23 +6,35 @@ var config = require('../../../config');
 var _ = require('underscore');
 var moment = require('moment');
 var BookingsController = require('./bookings');
+var ResourcesController = require('./resources');
 
 var ChargeabilityController = {};
 
 ChargeabilityController.getChargeabilityForPeriod = function (startDate, endDate, callback) {
     BookingsController.getPopulatedBookingsHistorical(function (err, bookings) {
+        if (err) {
+            callback(err);
+        }
+        else {
+            ResourcesController.getResources(function (err, allResources) {
+                if (err) {
+                    callback(err)
+                }
+                else {
+                    var filteredBookings = ChargeabilityController.filterByTime(bookings, startDate, endDate);
+                    var resourceChargeability = ChargeabilityController.calculateResourceChargeability(filteredBookings, startDate, endDate, allResources);
+                    var aggregatedChargeability = ChargeabilityController.calculateAggregatedChargeability(resourceChargeability);
 
-        var filteredBookings = ChargeabilityController.filterByTime(bookings, startDate, endDate);
-        var resourceChargeability = ChargeabilityController.calculateResourceChargeability(filteredBookings, endDate);
-        var aggregatedChargeability = ChargeabilityController.calculateAggregatedChargeability(resourceChargeability);
-
-        callback(null, {
-            startDate: startDate,
-            endDate: endDate,
-            filteredBookings: filteredBookings,
-            resourceChargeability: resourceChargeability,
-            aggregatedChargeability: aggregatedChargeability
-        });
+                    callback(null, {
+                        startDate: startDate,
+                        endDate: endDate,
+                        filteredBookings: filteredBookings,
+                        resourceChargeability: resourceChargeability,
+                        aggregatedChargeability: aggregatedChargeability
+                    });
+                }
+            });
+        }
     });
 }
 
@@ -69,7 +81,7 @@ ChargeabilityController.calculateBookingUtilization = function (durations) {
     };
 }
 
-ChargeabilityController.calculateResourceChargeability = function (bookings, endDate) {
+ChargeabilityController.calculateResourceChargeability = function (bookings, startDate, endDate, allResources) {
     var resourceBookings = [];
     /*
      {
@@ -131,6 +143,22 @@ ChargeabilityController.calculateResourceChargeability = function (bookings, end
             };
 
             resourceBookings.push(resourceBooking);
+        }
+    });
+
+    _.each(allResources, function (resource) {
+        var foundResource = _.findWhere(resourceBookings, { resource: resource.name });
+        if (!foundResource && resource.active) {
+            resourceBookings.push({
+                resource: resource.name,
+                image: null,
+                projects: [],
+                chargeability: {
+                    hoursBooked: 0,
+                    hoursCharged: 0
+                },
+                firstDurationDate: startDate
+            });
         }
     });
 

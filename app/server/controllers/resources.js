@@ -36,6 +36,9 @@ ResourcesController.fetchResources = function (callback) {
                     rest.get(url, options)
                         .on('success', function (result, response) {
                             logger.debug('getResources: ' + result.length + ' records');
+                            _.each(result, function (resource) {
+                                resource.active = true;
+                            });
                             ResourcesController.resourcesModel = result;
                             ResourcesController.resourcesModel.lastUpdate = new Date();
                             asyncCallback(null, result);
@@ -55,6 +58,9 @@ ResourcesController.fetchResources = function (callback) {
                     rest.get(url, options)
                         .on('success', function (result, response) {
                             logger.debug('getResourcesArchived: ' + result.length + ' records');
+                            _.each(result, function (resource) {
+                                resource.active = false;
+                            });
                             ResourcesController.resourcesModel = _.union(ResourcesController.resourcesModel, result);
                             asyncCallback(null, result);
                         })
