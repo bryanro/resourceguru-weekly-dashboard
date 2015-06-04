@@ -113,6 +113,10 @@ Util.applyMetadata = function (bookings) {
     return bookings;
 }
 
+Util.isResourceNonbillable = function (name) {
+    return _.findWhere(nonbillable, { resource: name }) ? true : false;
+}
+
 /**
  * Convert hex to rgba that can be plugged directly into the CSS style
  * @param hex includes with and without #, and also supports shorthand form

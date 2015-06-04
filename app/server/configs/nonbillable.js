@@ -5,5 +5,7 @@ module.exports = [
     { client: 'BlueFletch Internal', project: 'NRF' },
     { client: 'BlueFletch Internal', project: 'Training' },
     { client: 'BlueFletch Internal', project: 'Vacation' },
-    { client: 'Catavolt', project: 'Atlanta Food Bank' }
+    { client: 'Catavolt', project: 'Atlanta Food Bank' },
+    { resource: 'Lauren Lynn' },
+    { resource: 'Travis Adle' }
 ]

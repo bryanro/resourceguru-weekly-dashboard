@@ -37,8 +37,9 @@ ResourcesController.fetchResources = function (callback) {
                         .on('success', function (result, response) {
                             logger.debug('getResources: ' + result.length + ' records');
                             _.each(result, function (resource) {
-                                if (resource.type !== 'Account Manager' && resource.type !== 'Sales') {
-                                    resource.active = true;
+                                resource.active = true;
+                                if (util.isResourceNonbillable(resource.name)) {
+                                    resource.nonbillable = true;
                                 }
                             });
                             ResourcesController.resourcesModel = result;

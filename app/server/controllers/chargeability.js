@@ -148,7 +148,7 @@ ChargeabilityController.calculateResourceChargeability = function (bookings, sta
 
     _.each(allResources, function (resource) {
         var foundResource = _.findWhere(resourceBookings, { resource: resource.name });
-        if (!foundResource && resource.active) {
+        if (!foundResource && !resource.nonbillable && (resource.active || moment(resource.updated_at) < startDate)) {
             resourceBookings.push({
                 resource: resource.name,
                 image: null,
