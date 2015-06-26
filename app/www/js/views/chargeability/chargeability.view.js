@@ -41,7 +41,8 @@ define([
             "click #select-time-prev": "decrementTime",
             "click #select-time-next": "incrementTime",
             "change #select-time-category": "timeCategoryChange",
-            "change #select-time-value": "timeValueChange"
+            "change #select-time-value": "timeValueChange",
+            "click #clear-data-cache": "clearDataCache"
         },
 
         decrementTime: function () {
@@ -149,6 +150,9 @@ define([
                     startDate: startDate,
                     endDate: endDate
                 },
+                success: function (model, result, xhr) {
+                    $('#clear-data-cache').removeClass('disabled');
+                },
                 error: function (model, xhr, options) {
                     if (xhr && xhr.responseText) {
                         alert(xhr.responseText);
@@ -158,6 +162,22 @@ define([
                     }
                 }
             });
+        },
+
+        clearDataCache: function () {
+            var that = this;
+            $.ajax({
+                url: '/refresh',
+                type: "GET",
+                timeout: 60 * 1000, // 1 minute
+                success: function (model, result, xhr) {
+                    that.fetchChargeabilityData();
+                    alert('data cache cleared - table below should be accurate now');
+                },
+                error: function(xhr, result, error) {
+                    alert('error clearing cache');
+                }
+            })
         }
     });
 
