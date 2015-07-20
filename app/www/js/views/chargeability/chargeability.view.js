@@ -17,8 +17,6 @@ define([
 
             var that = this;
 
-            this.password = prompt('Enter password', '');
-
             this.weeks = Util.getWeeksThroughNow(2);
             this.months = Util.getMonthsThroughNow(1);
             this.years = Util.getYearsThroughNow();
@@ -146,7 +144,6 @@ define([
 
             this.chargeability.fetch({
                 data: {
-                    password: this.password,
                     startDate: startDate,
                     endDate: endDate
                 },

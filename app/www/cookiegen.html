@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        var saveCookie = function () {
+            document.cookie = 'adminPw=' + document.getElementById('admin-pw').value + '; expires=Fri, 1 Jan 2030 00:00:00 UTC; path=/';
+        }
+    </script>
+</head>
+<body>
+    Admin Password: <input type="password" id="admin-pw" /> <button id="save" onclick="saveCookie()">Save Cookie</button>
+</body>
+</html>

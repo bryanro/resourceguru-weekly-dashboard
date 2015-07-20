@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
     var startDate = req.param('startDate');
     var endDate = req.param('endDate');
-    var password = req.param('password');
+    var password = req.cookies.adminPw;
 
     if (config.disallowChargeability || password !== config.chargeabilityPassword) {
         logger.warn('disallowChargeability flag is set to true, so do not allow access');
