@@ -1,0 +1,19 @@
+module.exports = {
+    resourceguru: {
+        baseUri: 'https://api.resourceguruapp.com/',
+        baseUriWithDomain: 'https://api.resourceguruapp.com/v1/bluefletch',
+        domain: 'bluefletch',
+        options: {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        },
+        username: 'USERNAME',
+        password: 'PASSWORD',
+        clientId: 'CLIENTID',
+        clientSecret: 'CLIENTSECRET'
+    },
+    loggingVerbosity: 'info',
+    disallowChargeability: false,
+    chargeabilityPassword: 'PASSWORD'
+}
